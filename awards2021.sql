@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jul 11, 2021 at 10:52 PM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.2.27
+-- Host: localhost
+-- Generation Time: Jul 20, 2021 at 12:30 PM
+-- Server version: 10.4.19-MariaDB
+-- PHP Version: 8.0.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -21,6 +20,27 @@ SET time_zone = "+00:00";
 --
 -- Database: `awards2021`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admins`
+--
+
+CREATE TABLE `admins` (
+  `id` int(11) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `phone` varchar(10) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `admins`
+--
+
+INSERT INTO `admins` (`id`, `name`, `phone`, `email`, `password`) VALUES
+(1, 'admin', '0626808168', 'admin@ictc.tz', 'admin');
 
 -- --------------------------------------------------------
 
@@ -73,14 +93,20 @@ INSERT INTO `categories` (`id`, `name`, `awardFK`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `normineetype`
+-- Table structure for table `normineeType`
 --
 
-CREATE TABLE `normineetype` (
+CREATE TABLE `normineeType` (
   `id` int(11) NOT NULL,
-  `name` varchar(300) NOT NULL,
-  `wapendekezwaFK` int(11) NOT NULL
+  `name` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `normineeType`
+--
+
+INSERT INTO `normineeType` (`id`, `name`) VALUES
+(1, 'INTERNET SERVICE PROVIDER');
 
 -- --------------------------------------------------------
 
@@ -100,7 +126,8 @@ CREATE TABLE `wapendekeza` (
 --
 
 INSERT INTO `wapendekeza` (`id`, `name`, `email`, `code`) VALUES
-(1, 'Nicholaus Mayenga', 'nic@gmail.com', '123456');
+(21, 'Nicholaus Mayenga', 'mayenganicholaus66@gmail.com', 'yuiui98'),
+(22, 'Kulwa', 'clausevee@gmail.com', 'yuiui98');
 
 -- --------------------------------------------------------
 
@@ -109,25 +136,38 @@ INSERT INTO `wapendekeza` (`id`, `name`, `email`, `code`) VALUES
 --
 
 CREATE TABLE `wapendekezanawapendekezwa` (
+  `id` int(11) NOT NULL,
   `categoriesFK` int(11) NOT NULL,
   `pendekezaID` int(11) NOT NULL,
-  `pendekezwaID` int(11) NOT NULL
+  `pendekezwaID` int(11) NOT NULL,
+  `status` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `wapendekezanawapendekezwa`
 --
 
-INSERT INTO `wapendekezanawapendekezwa` (`categoriesFK`, `pendekezaID`, `pendekezwaID`) VALUES
-(3, 1, 1),
-(3, 1, 1),
-(4, 1, 1),
-(7, 1, 1),
-(8, 1, 1),
-(11, 1, 1),
-(13, 1, 1),
-(14, 1, 1),
-(15, 1, 1);
+INSERT INTO `wapendekezanawapendekezwa` (`id`, `categoriesFK`, `pendekezaID`, `pendekezwaID`, `status`) VALUES
+(21, 3, 21, 2, 'confirmed'),
+(22, 4, 21, 2, 'not confirmed'),
+(23, 7, 21, 2, 'not confirmed'),
+(24, 8, 21, 2, 'not confirmed'),
+(25, 11, 21, 2, 'not confirmed'),
+(26, 12, 21, 2, 'not confirmed'),
+(27, 13, 21, 2, 'not confirmed'),
+(28, 14, 21, 2, 'not confirmed'),
+(29, 15, 21, 2, 'not confirmed'),
+(30, 16, 21, 2, 'not confirmed'),
+(31, 3, 22, 3, 'confirmed'),
+(32, 4, 22, 2, 'not confirmed'),
+(33, 7, 22, 2, 'not confirmed'),
+(34, 8, 22, 2, 'confirmed'),
+(35, 11, 22, 2, 'not confirmed'),
+(36, 12, 22, 2, 'not confirmed'),
+(37, 13, 22, 2, 'not confirmed'),
+(38, 14, 22, 2, 'not confirmed'),
+(39, 15, 22, 2, 'not confirmed'),
+(40, 16, 22, 2, 'not confirmed');
 
 -- --------------------------------------------------------
 
@@ -140,19 +180,28 @@ CREATE TABLE `wapendekezwa` (
   `companyName` varchar(300) NOT NULL,
   `companyAddress` varchar(100) NOT NULL,
   `contact` varchar(15) NOT NULL,
-  `status` varchar(100) NOT NULL
+  `status` varchar(100) NOT NULL,
+  `type` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `wapendekezwa`
 --
 
-INSERT INTO `wapendekezwa` (`id`, `companyName`, `companyAddress`, `contact`, `status`) VALUES
-(1, 'TIGO TANZANIA', 'tigo@tele.com', '0715787898', 'system');
+INSERT INTO `wapendekezwa` (`id`, `companyName`, `companyAddress`, `contact`, `status`, `type`) VALUES
+(2, 'Vodacom Tanzania', 'info@vdc.go', '0626808168', 'Active', 1),
+(3, 'TIGO TANZANIA', 'info@vdc.goo', '0626808165', 'Active', 1);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `admins`
+--
+ALTER TABLE `admins`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `adminEmail` (`email`);
 
 --
 -- Indexes for table `awards`
@@ -168,22 +217,23 @@ ALTER TABLE `categories`
   ADD KEY `awards` (`awardFK`);
 
 --
--- Indexes for table `normineetype`
+-- Indexes for table `normineeType`
 --
-ALTER TABLE `normineetype`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `wapendekezwa` (`wapendekezwaFK`);
+ALTER TABLE `normineeType`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `wapendekeza`
 --
 ALTER TABLE `wapendekeza`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indexes for table `wapendekezanawapendekezwa`
 --
 ALTER TABLE `wapendekezanawapendekezwa`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `categoriesPendekezaPendekezwa` (`categoriesFK`,`pendekezaID`,`pendekezwaID`),
   ADD KEY `pendekezaID` (`pendekezaID`),
   ADD KEY `pendekezwaID` (`pendekezwaID`);
@@ -192,11 +242,18 @@ ALTER TABLE `wapendekezanawapendekezwa`
 -- Indexes for table `wapendekezwa`
 --
 ALTER TABLE `wapendekezwa`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `type` (`type`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `admins`
+--
+ALTER TABLE `admins`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `awards`
@@ -211,22 +268,28 @@ ALTER TABLE `categories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- AUTO_INCREMENT for table `normineetype`
+-- AUTO_INCREMENT for table `normineeType`
 --
-ALTER TABLE `normineetype`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `normineeType`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `wapendekeza`
 --
 ALTER TABLE `wapendekeza`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT for table `wapendekezanawapendekezwa`
+--
+ALTER TABLE `wapendekezanawapendekezwa`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `wapendekezwa`
 --
 ALTER TABLE `wapendekezwa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -239,18 +302,18 @@ ALTER TABLE `categories`
   ADD CONSTRAINT `categories_ibfk_1` FOREIGN KEY (`awardFK`) REFERENCES `awards` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `normineetype`
---
-ALTER TABLE `normineetype`
-  ADD CONSTRAINT `normineetype_ibfk_1` FOREIGN KEY (`wapendekezwaFK`) REFERENCES `wapendekezwa` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Constraints for table `wapendekezanawapendekezwa`
 --
 ALTER TABLE `wapendekezanawapendekezwa`
   ADD CONSTRAINT `wapendekezanawapendekezwa_ibfk_1` FOREIGN KEY (`categoriesFK`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `wapendekezanawapendekezwa_ibfk_2` FOREIGN KEY (`pendekezaID`) REFERENCES `wapendekeza` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `wapendekezanawapendekezwa_ibfk_3` FOREIGN KEY (`pendekezwaID`) REFERENCES `wapendekezwa` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `wapendekezwa`
+--
+ALTER TABLE `wapendekezwa`
+  ADD CONSTRAINT `wapendekezwa_ibfk_1` FOREIGN KEY (`type`) REFERENCES `normineeType` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
